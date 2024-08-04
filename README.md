@@ -11,7 +11,7 @@ Responsive Layout: Ensures a great experience across devices of various sizes.
 How to Use
 To use this web application:
 
-Visit the hosted page at https://LittleOllie.github.io/LittleOllieBuilder.
+Visit the hosted page at https://LittleOllie.github.io/LongLost.
 Use the dropdown menus to choose different traits and see the character change in real-time.
 Experiment with different combinations to create your unique character.
 File Structure
@@ -19,7 +19,7 @@ index.html - Contains the main HTML document.
 styles.css - Includes all the styling rules for the application.
 /images - Directory for all images used in the character creator, organized by type (hair, clothing, etc.).
 Local Development
-Clone the repository: git clone https://github.com/LittleOllie/LittleOllieBuilder.git
+Clone the repository: git clone https://github.com/LittleOllie/LongLost.git
 Navigate to the project directory.
 Open index.html in your browser to start customizing your character.
 Contributing
