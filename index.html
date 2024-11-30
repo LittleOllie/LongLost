@@ -625,16 +625,24 @@ function saveCharacterImage() {
 function saveCharacterImageBW() {
     const characterDisplay = document.getElementById("characterDisplay");
     const bwImages = Array.from(characterDisplay.querySelectorAll("img"))
+        .filter(img => img.src) // Ignore empty `src` attributes
         .map(img => {
             const bwImg = document.createElement('img');
-            bwImg.src = img.src.replace('.PNG', 'BW.PNG');
+            bwImg.src = img.src.replace(/\.PNG/i, 'BW.PNG'); // Case-insensitive replacement
             return bwImg;
         });
+
+    if (bwImages.length === 0) {
+        alert("No character traits found! Please assemble a character first.");
+        return;
+    }
 
     const tempContainer = document.createElement('div');
     tempContainer.style.position = 'relative';
     tempContainer.style.width = `${characterDisplay.offsetWidth}px`;
     tempContainer.style.height = `${characterDisplay.offsetHeight}px`;
+    tempContainer.style.visibility = 'hidden'; // Hide container
+    document.body.appendChild(tempContainer); // Append to DOM for rendering
 
     bwImages.forEach(img => {
         img.style.position = 'absolute';
@@ -643,13 +651,29 @@ function saveCharacterImageBW() {
         tempContainer.appendChild(img);
     });
 
-    html2canvas(tempContainer).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'character-bw.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    });
+    // Wait a short time to ensure all images are loaded
+    setTimeout(() => {
+        html2canvas(tempContainer).then(canvas => {
+            document.body.removeChild(tempContainer); // Clean up the temporary container
+
+            const link = document.createElement('a');
+            link.download = 'character-bw.png';
+            link.href = canvas.toDataURL('image/png');
+
+            // Safari-specific handling
+            if (navigator.userAgent.includes("Safari") && !navigator.userAgent.includes("Chrome")) {
+                window.open(link.href, '_blank');
+            } else {
+                link.click();
+            }
+        }).catch(error => {
+            document.body.removeChild(tempContainer); // Ensure cleanup
+            console.error("Error capturing canvas:", error);
+            alert("Failed to save character as B&W. Please try again.");
+        });
+    }, 500); // Delay to ensure images load
 }
+
 </script>
 </body>
 </html>
